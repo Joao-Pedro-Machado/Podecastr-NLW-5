@@ -11,6 +11,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css'
 import styles from './styles.module.scss';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
+import useTheme from '../../contexts/ThemeContext';
 
 
 export function Player() {
@@ -32,6 +33,8 @@ export function Player() {
             hasPrevious,
             clearPlayerState,
         } = usePlayer();
+
+        const { isDark } = useTheme()
 
     useEffect(() => {
         if (!audioRef.current) {
@@ -69,7 +72,7 @@ export function Player() {
     const episode = episodeList[currentEpisodeIndex];
 
     return (
-        <div className={styles.playerContainer}>
+        <div className={isDark ? `${styles.playerContainer} ${styles.dark}` : styles.playerContainer}>
             <header>
                 <img src="/playing.svg" alt="Tocando agora"/>
                 <strong>Tocando agora</strong>
@@ -80,7 +83,7 @@ export function Player() {
                     <Image width={592}
                     height={592}
                     src={episode.thumbnail}
-                    objectFit="cover"
+                    objectFit="scale-down"
                     />
 
                     <strong>{episode.title}</strong>

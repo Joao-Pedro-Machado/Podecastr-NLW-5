@@ -11,6 +11,7 @@ import styles from './home.module.scss';
 import { usePlayer } from '../contexts/PlayerContext';
 import React from 'react';
 import Head from 'next/head';
+import useTheme from '../contexts/ThemeContext';
 
 type Episode = {
   id: string;
@@ -34,14 +35,20 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
 
   const episodeList = [...latestEpisodes, ...allEpisodes];
 
+  const { isDark } = useTheme();
+
   return (
-    <div className={styles.homepage}>
+    <div
+    className={isDark ? `${styles.homepage} ${styles.dark}` : styles.homepage}
+    >
 
       <Head>
         <title>Home | Podecastr</title>
       </Head>
 
-      <section className={styles.latestEpisodes}>
+      <section
+      className={isDark ? `${styles.latestEpisodes} ${styles.dark}` : styles.latestEpisodes}
+      >
         <h2>Últimos lançamentos</h2>
 
         <ul>
@@ -56,7 +63,9 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                  objectFit="cover"
                 />
 
-                <div className={styles.episodeDetails}>
+                <div
+                className={isDark ? `${styles.episodeDetails} ${styles.dark}` : styles.episodeDetails}
+                >
                   <Link href={`/episodes/${episode.id}`}>
                     <a >{episode.title}</a>
                   </Link>
@@ -74,7 +83,9 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
         </ul>
       </section>
 
-      <section className={styles.allEpisodes}>
+      <section
+      className={isDark ? `${styles.allEpisodes} ${styles.dark}` : styles.allEpisodes}
+      >
           <h2>Todos episódios</h2>
 
           <table cellSpacing={0}>

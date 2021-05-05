@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { usePlayer } from '../../contexts/PlayerContext';
 import React from 'react';
 import Head from 'next/head';
+import useTheme from '../../contexts/ThemeContext';
 
 
 type Episode = {
@@ -34,44 +35,48 @@ type EpisodeProps = {
 export default function Episode({ episode }: EpisodeProps) {
     const { play } = usePlayer()
 
+    const { isDark } = useTheme();
+
     return (
-        <div className={styles.episode}>
-        <Head>
-            <title>{episode.title} | Podecastr</title>
-        </Head>
-            <div className={styles.thumbnailContainer}>
+        <div className={isDark ? `${styles.episodeContainer} ${styles.dark}` : styles.episodeContainer}>
+            <div className={isDark ? `${styles.episode} ${styles.dark}` : styles.episode}>
+            <Head>
+                <title>{episode.title} | Podecastr</title>
+            </Head>
+                <div className={styles.thumbnailContainer}>
 
 
-                <Link href="/" >
-                <button type="button">
-                    <img src="/arrow-left.svg" alt="Voltar"/>
-                </button>
-                </Link>
+                    <Link href="/" >
+                        <button type="button">
+                            <img src="/arrow-left.svg" alt="Voltar"/>
+                        </button>
+                    </Link>
 
-                <Image 
-                width={700} 
-                height={160}
-                src={episode.thumbnail}
-                objectFit='cover'
+                    <Image 
+                    width={700} 
+                    height={160}
+                    src={episode.thumbnail}
+                    objectFit='cover'
+                    />
+                    <button type="button" onClick={() => play(episode)}>
+                        <img src='/play.svg' alt="Tocar episódio"/>
+                    </button>
+                </div>
+
+                <header>
+                    <h1>{episode.title}</h1>
+                    <span>{episode.members}</span>
+                    <span>{episode.publishedAt}</span>
+                    <span>{episode.durationAsString}</span>
+                </header>
+
+
+                <div 
+                className={isDark ? `${styles.description} ${styles.dark}` : styles.description} 
+                dangerouslySetInnerHTML={{ __html: episode.description }}
                 />
-                <button type="button" onClick={() => play(episode)}>
-                    <img src='/play.svg' alt="Tocar episódio"/>
-                </button>
+
             </div>
-
-            <header>
-                <h1>{episode.title}</h1>
-                <span>{episode.members}</span>
-                <span>{episode.publishedAt}</span>
-                <span>{episode.durationAsString}</span>
-            </header>
-
-
-            <div 
-            className={styles.description} 
-            dangerouslySetInnerHTML={{ __html: episode.description }}
-            />
-
         </div>
     )
 }
